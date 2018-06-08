@@ -1,0 +1,45 @@
+package uk.co.taniakolesnik.adn_popularmovies_part_1.Utils;
+
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+import android.util.Log;
+
+import java.util.List;
+
+import uk.co.taniakolesnik.adn_popularmovies_part_1.Movie;
+
+
+/**
+ * Created by tetianakolesnik on 03/06/2018.
+ */
+
+public class MovieAsyncTaskLoader extends AsyncTaskLoader<List<Movie>> {
+
+
+    private static String mUrl;
+
+    public MovieAsyncTaskLoader(Context context, String mUrl) {
+        super(context);
+        this.mUrl= mUrl;
+    }
+
+    @Override
+    public List<Movie> loadInBackground() {
+        List<Movie> results = MovieUtils.fetchMoviInfo(mUrl);
+        if (results == null){
+            return null;
+        }
+        return results;
+    }
+
+    @Override
+    protected void onStartLoading() {
+        forceLoad();
+    }
+
+    @Override
+    protected void onStopLoading() {
+        cancelLoad();
+    }
+
+}
