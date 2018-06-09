@@ -19,4 +19,8 @@
     <string name="movie_plot_bundle" translatable="false">plot</string>
     <string name="movie_image_bundle" translatable="false">image</string>
 
+    <string name="no_connection_error">No internet connection!</string>
+    <string name="no_date_error">No data returned!</string>
+
+
 </resources>

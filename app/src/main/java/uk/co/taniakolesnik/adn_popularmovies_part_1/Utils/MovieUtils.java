@@ -1,7 +1,5 @@
 package uk.co.taniakolesnik.adn_popularmovies_part_1.Utils;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,9 +22,7 @@ import uk.co.taniakolesnik.adn_popularmovies_part_1.Movie;
 
 public class MovieUtils {
 
-    private static final String TAG = "MovieUtils";
-
-    public static ArrayList<Movie> fetchMoviInfo(String urlString){
+    public static ArrayList<Movie> fetchMoviInfo(String urlString) {
         URL url = createUrl(urlString);
         String jsonReply = makeHTTPRequest(url);
         return extractMovie(jsonReply);
@@ -46,7 +41,7 @@ public class MovieUtils {
 
     private static String makeHTTPRequest(URL url) {
         String jsonReply = "";
-        if (url == null){
+        if (url == null) {
             return jsonReply;
         }
         HttpURLConnection httpURLConnection = null;
@@ -57,7 +52,7 @@ public class MovieUtils {
             httpURLConnection.setReadTimeout(15000);
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.connect();
-            if (httpURLConnection.getResponseCode()==200){
+            if (httpURLConnection.getResponseCode() == 200) {
                 inputStream = httpURLConnection.getInputStream();
                 jsonReply = readFromInout(inputStream);
             } else {
@@ -66,9 +61,9 @@ public class MovieUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (httpURLConnection != null){
+            if (httpURLConnection != null) {
                 httpURLConnection.disconnect();
-                if (inputStream != null){
+                if (inputStream != null) {
                     try {
                         inputStream.close();
                     } catch (IOException e) {
@@ -83,11 +78,11 @@ public class MovieUtils {
 
     private static String readFromInout(InputStream inputStream) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
-        if (inputStream != null){
+        if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line = bufferedReader.readLine();
-            while (line != null){
+            while (line != null) {
                 stringBuilder.append(line);
                 line = bufferedReader.readLine();
             }
@@ -100,9 +95,9 @@ public class MovieUtils {
         try {
             JSONObject json = new JSONObject(jsonReply);
             JSONArray jsonArray = json.getJSONArray("results");
-            for (int i=0; i<jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String title = jsonObject.optString("title");
+                String title = jsonObject.optString("original_title");
                 String releaseDate = jsonObject.optString("release_date");
                 String imagePath = jsonObject.optString("poster_path");
                 int voteAverage = jsonObject.optInt("vote_average");
